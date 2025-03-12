@@ -1,81 +1,96 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement; // Подключаем пространство имён для работы со сценами
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     public float roadDistance = 0.6f; // Расстояние между дорогами
-    public float swipeDistation = 25f; // Минимальная дистанция для свайпа
-    public float jumpForce = 5f; // Сила прыжка
-    public float slideTime = 1f; // Длительность подката
+    public float swipeThreshold = 25f; // Минимальная дистанция для свайпа
+    public float forwardSpeed = 5f; // Скорость движения вперёд
+    public float jumpForce = 10f; // Сила прыжка
+    public float slideDuration = 1f; // Длительность подката
     public float fastFallGravityMultiplier = 2f; // Множитель гравитации для ускоренного падения
 
-    private int roadCur = 1; // Текущая дорога (0 - левая, 1 - центральная, 2 - правая)
-    private Vector2 touchStartPos;
+    private int currentLane = 1; // Текущая дорога (0 - левая, 1 - центральная, 2 - правая)
+    private Vector2 touchStartPos; // Начальная позиция касания
     private bool isSwiping = false; // Флаг для отслеживания свайпа
     private bool isJumping = false; // Флаг для отслеживания прыжка
     private bool isSliding = false; // Флаг для отслеживания подката
     private bool isFastFalling = false; // Флаг для ускоренного падения
 
-    private Rigidbody rb; // Компонент Rigidbody (для прыжка)
+    private Rigidbody rb; // Компонент Rigidbody для физики
     private Vector3 originalScale; // Исходный размер персонажа
     private float originalGravityScale; // Исходная гравитация
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        originalScale = transform.localScale;
-        originalGravityScale = Physics.gravity.y;
+        rb = GetComponent<Rigidbody>(); // Получаем компонент Rigidbody
+        originalScale = transform.localScale; // Сохраняем исходный размер персонажа
+        originalGravityScale = Physics.gravity.y; // Сохраняем исходную гравитацию
     }
 
     void Update()
     {
-        // Функция для перемещения (свайп)
-        HandTouch();
+        MoveForward(); // Движение вперёд
+        HandleTouchInput(); // Обработка свайпов
 
         // Ускоренное падение
         if (isFastFalling)
         {
-            rb.velocity += Vector3.up * Physics.gravity.y * (fastFallGravityMultiplier - 1) * Time.deltaTime;
+            ApplyFastFall();
         }
     }
 
-    void HandTouch()
+    // Метод для перезагрузки текущей сцены
+    public void RestartCurrentScene()
     {
-        // Проверка, есть ли касание
+        // Получаем имя текущей сцены
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        // Перезагружаем сцену
+        SceneManager.LoadScene(currentSceneName);
+    }
+
+    // Движение вперёд
+    void MoveForward()
+    {
+        rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, forwardSpeed);
+    }
+
+    // Обработка свайпов
+    void HandleTouchInput()
+    {
         if (Input.touchCount > 0)
         {
-            // Получение информации о первом касании
-            Touch touch = Input.GetTouch(0);
+            Touch touch = Input.GetTouch(0); // Получаем информацию о касании
 
-            // Состояние касания
             switch (touch.phase)
             {
-                case TouchPhase.Began: // Начало свайпа
-                    touchStartPos = touch.position; // Начальная позиция касания
-                    isSwiping = true; // Начатие свайпа
+                case TouchPhase.Began: // Начало касания
+                    touchStartPos = touch.position; // Запоминаем начальную позицию
+                    isSwiping = true; // Начинаем отслеживать свайп
                     break;
 
                 case TouchPhase.Moved: // Движение пальца
                     if (isSwiping)
                     {
                         Vector2 touchCurrentPos = touch.position; // Текущая позиция касания
-                        Vector2 swipeDelta = touchCurrentPos - touchStartPos;
+                        Vector2 swipeDelta = touchCurrentPos - touchStartPos; // Вектор свайпа
 
-                        // Проверерка на превышает ли свайп минимальную дистанцию
-                        if (swipeDelta.magnitude > swipeDistation)
+                        // Проверяем, превышает ли свайп минимальную дистанцию
+                        if (swipeDelta.magnitude > swipeThreshold)
                         {
-                            // Определение направления свайпа
+                            // Определяем направление свайпа
                             if (Mathf.Abs(swipeDelta.x) > Mathf.Abs(swipeDelta.y))
                             {
                                 // Горизонтальный свайп (влево/вправо)
                                 if (swipeDelta.x > 0)
                                 {
-                                    ChangeRoad(1); // Свайп вправо
+                                    ChangeLane(1); // Свайп вправо
                                 }
                                 else
                                 {
-                                    ChangeRoad(-1); // Свайп влево
+                                    ChangeLane(-1); // Свайп влево
                                 }
                             }
                             else
@@ -97,41 +112,47 @@ public class Player : MonoBehaviour
                                     }
                                 }
                             }
-                            isSwiping = false; // Завершение свайпа
+                            isSwiping = false; // Завершаем свайп
                         }
                     }
                     break;
 
-                case TouchPhase.Ended: // Конец свайпа
-                    isSwiping = false; // Завершение свайпа
+                case TouchPhase.Ended: // Конец касания
+                    isSwiping = false; // Завершаем свайп
                     break;
             }
         }
     }
 
-    void ChangeRoad(int direction)
+    // Переключение между дорогами
+    void ChangeLane(int direction)
     {
-        int newRoad = roadCur + direction;
-        // Проверка выхода за пределы
-        if (newRoad < 0 || newRoad > 2)
+        int newLane = currentLane + direction;
+
+        // Проверяем, чтобы не выйти за пределы дорог
+        if (newLane < 0 || newLane > 2)
             return;
 
-        roadCur = newRoad;
+        currentLane = newLane;
 
-        Vector3 newPosition = transform.position; // Получение новой позиции
-        newPosition.x = (roadCur - 1) * roadDistance; // -1, 0, 1
+        // Вычисляем новую позицию по оси X
+        Vector3 newPosition = transform.position;
+        newPosition.x = (currentLane - 1) * roadDistance; // -1, 0, 1
         transform.position = newPosition;
     }
 
+    // Прыжок
     void Jump()
     {
         if (!isJumping)
         {
             isJumping = true;
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse); // Сила для прыжка
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z); // Сбрасываем вертикальную скорость
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse); // Применяем силу для прыжка
         }
     }
 
+    // Ускоренное падение
     void FastFall()
     {
         if (!isFastFalling)
@@ -141,29 +162,44 @@ public class Player : MonoBehaviour
         }
     }
 
+    // Подкат
     void Slide()
     {
         if (!isSliding)
         {
             isSliding = true;
-            transform.localScale = new Vector3(originalScale.x, originalScale.y * 0.5f, originalScale.z); // Уменьшение высоты персонажа
-            Invoke("ResetSlide", slideTime); // Сбрасывание флага подката через указанное время
+            transform.localScale = new Vector3(originalScale.x, originalScale.y * 0.5f, originalScale.z); // Уменьшаем высоту персонажа
+            Invoke("ResetSlide", slideDuration); // Сбрасываем подкат через указанное время
         }
     }
 
+    // Сброс подката
     void ResetSlide()
     {
-        transform.localScale = originalScale; // Восстанавление исходного размера
+        transform.localScale = originalScale; // Восстанавливаем исходный размер
         isSliding = false;
     }
 
+    // Применение ускоренного падения
+    void ApplyFastFall()
+    {
+        rb.velocity += Vector3.up * Physics.gravity.y * (fastFallGravityMultiplier - 1) * Time.deltaTime;
+    }
+
+    // Обработка столкновений
     void OnCollisionEnter(Collision collision)
     {
-        // Проверка, приземлился ли персонаж
+        // Проверяем, приземлился ли персонаж
         if (collision.gameObject.CompareTag("Ground"))
         {
             isJumping = false;
             isFastFalling = false;
+        }
+
+        // Проверяем столкновение с барьером
+        if (collision.gameObject.CompareTag("Barrier"))
+        {
+            RestartCurrentScene();
         }
     }
 }

@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/RunOnRoad.unity
+    guid: aa9ceea8780014049a21e6e7dfec38b3
   m_configObjects: {}
