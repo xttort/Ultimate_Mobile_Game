@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public Camera playerCam;
     public float roadDistance = 0.6f; // Расстояние между дорогами
     public float swipeThreshold = 25f; // Минимальная дистанция для свайпа
     public float forwardSpeed = 5f; // Скорость движения вперёд
     public float jumpForce = 10f; // Сила прыжка
     public float slideDuration = 1f; // Длительность подката
     public float fastFallGravityMultiplier = 2f; // Множитель гравитации для ускоренного падения
+    private int[,] mas = new int[4, 2] { {0,1}, {1,0}, {0, -1}, {-1, 0}, };
 
     private int currentLane = 1; // Текущая дорога (0 - левая, 1 - центральная, 2 - правая)
     private Vector2 touchStartPos; // Начальная позиция касания
@@ -22,6 +24,8 @@ public class Player : MonoBehaviour
     private Rigidbody rb; // Компонент Rigidbody для физики
     private Vector3 originalScale; // Исходный размер персонажа
     private float originalGravityScale; // Исходная гравитация
+
+    private int curDirection = 0;
 
     void Start()
     {
@@ -42,6 +46,16 @@ public class Player : MonoBehaviour
         }
     }
 
+    int moveDirection(int changeFor)
+    {
+        int newDir = 0;
+        if (curDirection + changeFor > 3)
+        { newDir = 0; }
+        else if (curDirection + changeFor < 0)
+        { newDir = 3; }
+        return newDir;
+    }
+
     // Метод для перезагрузки текущей сцены
     public void RestartCurrentScene()
     {
@@ -54,13 +68,14 @@ public class Player : MonoBehaviour
     // Движение вперёд
     void MoveForward()
     {
-        rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, forwardSpeed);
+        rb.velocity = new Vector3(transform.forward.x * forwardSpeed, rb.velocity.y, transform.forward.z * forwardSpeed);
+        //rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, forwardSpeed); старое
     }
 
     // Обработка свайпов
     void HandleTouchInput()
     {
-        if (Input.touchCount > 0)
+        if (Input.touchCount > 0 && forwardSpeed > 0)//двигаемся когда есть скорость
         {
             Touch touch = Input.GetTouch(0); // Получаем информацию о касании
 
@@ -136,9 +151,21 @@ public class Player : MonoBehaviour
         currentLane = newLane;
 
         // Вычисляем новую позицию по оси X
-        Vector3 newPosition = transform.position;
-        newPosition.x = (currentLane - 1) * roadDistance; // -1, 0, 1
-        transform.position = newPosition;
+        //Vector3 newPosition = transform.position;старое
+        //newPosition.x = (currentLane - 1) * roadDistance; // -1, 0, 1
+        //transform.position = newPosition;
+
+        transform.position = new Vector3(transform.position.x + transform.right.x*direction*roadDistance, transform.position.y, transform.position.z + transform.right.z*direction * roadDistance);
+        //switch (direction)
+        //{
+        //    case -1:
+        //        transform.position = new Vector3(transform.position.x + transform.right.x , transform.position.y, transform.position.z + transform.right.z);
+        //        break;
+        //    case 1:
+        //        break;
+
+
+        //}
     }
 
     // Прыжок
