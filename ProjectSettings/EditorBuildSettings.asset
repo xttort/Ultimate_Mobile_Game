@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FlappyBirds.unity
     guid: 61f541d2c4d327a4fb0e2d4581c86d0c
+  - enabled: 1
+    path: Assets/Scenes/FruitNinja.unity
+    guid: 10da52e318eb18845ad9e08bb8be9a87
   m_configObjects: {}

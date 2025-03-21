@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - Barrier
   - Wall
+  - Fruit
+  - Bomb
   layers:
   - Default
   - TransparentFX
@@ -14,8 +16,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Fruit
+  - Bomb
   - 
   - 
   - 
