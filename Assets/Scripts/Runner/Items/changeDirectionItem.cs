@@ -6,6 +6,7 @@ public class changeDirectionItem : MonoBehaviour
 {
     public bool avtoRotate = true;
 
+
     public bool left = false;
     public bool right = false;
     public bool back = false;
@@ -51,9 +52,9 @@ public class changeDirectionItem : MonoBehaviour
 
     void waitToGo(float time)
     {
-        Debug.Log(waitTimer);
         waitTimer += Time.deltaTime;//изменение значения таймера
         //Debug.Log(waitTimer);
+        
 
         if (waitTimer >= time)//если таймер отработал своё время
         {

@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public float jumpForce = 10f; // Сила прыжка
     public float slideDuration = 1f; // Длительность подката
     public float fastFallGravityMultiplier = 2f; // Множитель гравитации для ускоренного падения
+    public string code;
     private int[,] mas = new int[4, 2] { {0,1}, {1,0}, {0, -1}, {-1, 0}, };
 
     private int currentLane = 1; // Текущая дорога (0 - левая, 1 - центральная, 2 - правая)
