@@ -10,6 +10,8 @@ public class Bird : MonoBehaviour
     public float speedForward = 5f;
     public float fallSpeed = 2f;
 
+    public GameObject slideSoundPrefab; //Префаб со звуком слайда
+
     //Компонет RigidBody
     private Rigidbody rb;
 
@@ -33,11 +35,22 @@ public class Bird : MonoBehaviour
             if (touch.phase == TouchPhase.Began) // Если касание только началось
             {
                 Jump();
+                GetComponent<Bird>().PlaySound();
             }
         }
 
         //падение вниз
         FallDown();
+    }
+
+    void PlaySound()
+    {
+        if (slideSoundPrefab != null)
+        {
+            // Создаём экземпляр звука и удаляем его после проигрывания
+            GameObject soundInstance = Instantiate(slideSoundPrefab, transform.position, Quaternion.identity);
+            Destroy(soundInstance, 0.5f);
+        }
     }
 
     public void RestartCurrentScene()

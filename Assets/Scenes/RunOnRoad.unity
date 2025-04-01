@@ -3169,6 +3169,7 @@ MonoBehaviour:
   slideDuration: 1
   fastFallGravityMultiplier: 10
   code: 
+  slideSoundPrefab: {fileID: 7362903737167126186, guid: efdb0ec40611d764fbd6912e90b4f28e, type: 3}
 --- !u!114 &1272725196
 MonoBehaviour:
   m_ObjectHideFlags: 0

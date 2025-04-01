@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnArea: {fileID: 0}
+  slideSoundPrefab: {fileID: 7362903737167126186, guid: 014c551ee84b7104db6b341f48ca91a6, type: 3}
 --- !u!4 &250357918
 Transform:
   m_ObjectHideFlags: 0
@@ -1067,6 +1068,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66ba42d24f336324b9ffa1cd0181e5d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slideSoundPrefab: {fileID: 7362903737167126186, guid: d71810df10eb98f41b5bab83e4e96f02, type: 3}
   maxHealth: 3
   respawnArea: {fileID: 0}
   healthText: {fileID: 1767694700}

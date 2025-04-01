@@ -4,9 +4,13 @@ using TMPro; // Необходимо для работы с TextMeshPro
 
 public class DeletObject : MonoBehaviour
 {
+
+    public GameObject slideSoundPrefab; //Префаб со звуком слайда
+
     [Header("Health Settings")]
     public int maxHealth = 3; // Максимальное количество жизней
     private int currentHealth; // Текущее количество жизней
+
 
     [Header("References")]
     public Transform respawnArea; // Область для респавна объектов
@@ -18,12 +22,23 @@ public class DeletObject : MonoBehaviour
         UpdateHealthUI(); // Обновляем интерфейс
     }
 
+    void PlaySound()
+    {
+        if (slideSoundPrefab != null)
+        {
+            // Создаём экземпляр звука и удаляем его после проигрывания
+            GameObject soundInstance = Instantiate(slideSoundPrefab, transform.position, Quaternion.identity);
+            Destroy(soundInstance, 3f);
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         // Проверяем тег столкнувшегося объекта
         if (collision.gameObject.CompareTag("Fruit") || collision.gameObject.CompareTag("Bomb"))
         {
             TakeDamage(); // Наносим урон
+            GetComponent<DeletObject>().PlaySound();
             ReturnObjectToPool(collision.gameObject); // Возвращаем объект в пул
         }
     }

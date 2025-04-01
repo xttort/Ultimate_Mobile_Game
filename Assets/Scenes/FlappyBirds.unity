@@ -2206,6 +2206,7 @@ MonoBehaviour:
   jumpForce: 10
   speedForward: 6
   fallSpeed: 30
+  slideSoundPrefab: {fileID: 7362903737167126186, guid: 583af7ef2bb607049ad010b401206dde, type: 3}
 --- !u!54 &1543250897
 Rigidbody:
   m_ObjectHideFlags: 0

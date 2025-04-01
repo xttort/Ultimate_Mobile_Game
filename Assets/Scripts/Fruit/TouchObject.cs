@@ -6,6 +6,7 @@ public class TouchObject : MonoBehaviour
 {
 
     public Transform spawnArea;
+    public GameObject slideSoundPrefab; //Префаб со звуком слайда
 
     void Update()
     {
@@ -25,12 +26,22 @@ public class TouchObject : MonoBehaviour
                 {
                     // Если объект обнаружен, удаляем его
                     ReturnObjectToPool(hit.collider.gameObject);
+                    GetComponent<TouchObject>().PlaySound();
                     Debug.Log("Объект уничтожен: " + hit.collider.name);
                 }
             }
         }
     }
 
+    void PlaySound()
+    {
+        if (slideSoundPrefab != null)
+        {
+            // Создаём экземпляр звука и удаляем его после проигрывания
+            GameObject soundInstance = Instantiate(slideSoundPrefab, transform.position, Quaternion.identity);
+            Destroy(soundInstance, 3f);
+        }
+    }
     void ReturnObjectToPool(GameObject obj)
     {
         // "Удаляем" объект, возвращая его в пул

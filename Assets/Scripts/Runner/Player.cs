@@ -26,10 +26,13 @@ public class Player : MonoBehaviour
     private Vector3 originalScale; // Исходный размер персонажа
     private float originalGravityScale; // Исходная гравитация
 
+    public GameObject slideSoundPrefab; //Префаб со звуком слайда
+
     private int curDirection = 0;
 
     void Start()
     {
+        
         rb = GetComponent<Rigidbody>(); // Получаем компонент Rigidbody
         originalScale = transform.localScale; // Сохраняем исходный размер персонажа
         originalGravityScale = Physics.gravity.y; // Сохраняем исходную гравитацию
@@ -47,6 +50,16 @@ public class Player : MonoBehaviour
         }
     }
 
+    void PlaySlideSound()
+    {
+        if (slideSoundPrefab != null)
+        {
+            // Создаём экземпляр звука и удаляем его после проигрывания
+            GameObject soundInstance = Instantiate(slideSoundPrefab, transform.position, Quaternion.identity);
+            Destroy(soundInstance, 3f);
+        }
+    }
+
     int moveDirection(int changeFor)
     {
         int newDir = 0;
@@ -57,8 +70,8 @@ public class Player : MonoBehaviour
         return newDir;
     }
 
-    // Метод для перезагрузки текущей сцены
-    public void RestartCurrentScene()
+        // Метод для перезагрузки текущей сцены
+        public void RestartCurrentScene()
     {
         // Получаем имя текущей сцены
         string currentSceneName = SceneManager.GetActiveScene().name;
@@ -103,10 +116,12 @@ public class Player : MonoBehaviour
                                 if (swipeDelta.x > 0)
                                 {
                                     ChangeLane(1); // Свайп вправо
+                                    GetComponent<Player>().PlaySlideSound();
                                 }
                                 else
                                 {
                                     ChangeLane(-1); // Свайп влево
+                                    GetComponent<Player>().PlaySlideSound();
                                 }
                             }
                             else
@@ -115,16 +130,19 @@ public class Player : MonoBehaviour
                                 if (swipeDelta.y > 0 && !isJumping)
                                 {
                                     Jump(); // Свайп вверх (прыжок)
+                                    GetComponent<Player>().PlaySlideSound();
                                 }
                                 else if (swipeDelta.y < 0)
                                 {
                                     if (isJumping)
                                     {
                                         FastFall(); // Свайп вниз в воздухе (ускоренное падение)
+                                        GetComponent<Player>().PlaySlideSound();
                                     }
                                     else if (!isSliding)
                                     {
                                         Slide(); // Свайп вниз на земле (подкат)
+                                        GetComponent<Player>().PlaySlideSound();
                                     }
                                 }
                             }
