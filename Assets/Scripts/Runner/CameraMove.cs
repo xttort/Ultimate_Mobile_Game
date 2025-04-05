@@ -8,15 +8,22 @@ public class CameraMove : MonoBehaviour
     public int cameraViewType = 1;
     public Transform backTransform; // Смещение камеры вид сзади
     public Transform mapTransform; // Смещение камеры вид сверху - обзор на карту
+    
 
+    private void Start()
+    {
+
+    }
     void CopyTransform(Transform newTransform)// копирует поворот и позицию пустой точки для камеры
     {
-        gameObject.transform.position = newTransform.position;
-        gameObject.transform.rotation = newTransform.rotation;
+        transform.position = newTransform.position; //new Vector3(Mathf.Lerp(transform.position.x, newTransform.position.x, newTransform.position.x/transform.position.x), newTransform.position.y, newTransform.position.z);
+        transform.rotation = newTransform.rotation;
     }
     void LateUpdate()
     {
-        switch(cameraViewType)//выбор типа вида - сзади - 1, сверху - 2
+
+
+        switch (cameraViewType)//выбор типа вида - сзади - 1, сверху - 2
         {
             case 1:
                 CopyTransform(backTransform);
@@ -26,5 +33,28 @@ public class CameraMove : MonoBehaviour
                 break;
         }
 
+
+
+    }
+
+    void Update()
+    {
+        //if (gameObject.transform.position.x > backTransform.position.x && cameraAnimation.GetBool("left") == false)
+        //{
+        //    cameraAnimation.SetBool("left", true);
+        //    Debug.Log("!L");
+        //}
+
+        //if (gameObject.transform.position.x < backTransform.position.x && cameraAnimation.GetBool("right") == false)
+        //{
+        //    cameraAnimation.SetBool("right", true);
+        //}
+
+        //if (gameObject.transform.position.x == backTransform.position.x && cameraAnimation.GetBool("right") == false && cameraAnimation.GetBool("left") == false)
+        //{
+        //    cameraAnimation.SetBool("right", false);
+        //    cameraAnimation.SetBool("left", false);
+        //}
+        
     }
 }
