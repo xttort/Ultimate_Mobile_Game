@@ -15,6 +15,12 @@ public class Player : MonoBehaviour
     public string code;
     private int[,] mas = new int[4, 2] { {0,1}, {1,0}, {0, -1}, {-1, 0}, };
 
+    public GameObject slideSoundPrefab; //Префаб со звуком слайда
+
+    [Header("Trigger References")]
+    public Trigger leftTrigger;
+    public Trigger rightTrigger;
+
     private int currentLane = 1; // Текущая дорога (0 - левая, 1 - центральная, 2 - правая)
     private Vector2 touchStartPos; // Начальная позиция касания
     private bool isSwiping = false; // Флаг для отслеживания свайпа
@@ -25,8 +31,6 @@ public class Player : MonoBehaviour
     private Rigidbody rb; // Компонент Rigidbody для физики
     private Vector3 originalScale; // Исходный размер персонажа
     private float originalGravityScale; // Исходная гравитация
-
-    public GameObject slideSoundPrefab; //Префаб со звуком слайда
 
     private int curDirection = 0;
 
@@ -113,12 +117,12 @@ public class Player : MonoBehaviour
                             if (Mathf.Abs(swipeDelta.x) > Mathf.Abs(swipeDelta.y))
                             {
                                 // Горизонтальный свайп (влево/вправо)
-                                if (swipeDelta.x > 0)
+                                if (swipeDelta.x > 0 && !rightTrigger.notMove)
                                 {
                                     ChangeLane(1); // Свайп вправо
                                     GetComponent<Player>().PlaySlideSound();
                                 }
-                                else
+                                else if(swipeDelta.x < 0 && !leftTrigger.notMove)
                                 {
                                     ChangeLane(-1); // Свайп влево
                                     GetComponent<Player>().PlaySlideSound();
