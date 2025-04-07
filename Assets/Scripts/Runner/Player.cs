@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     public float fastFallGravityMultiplier = 2f; // Множитель гравитации для ускоренного падения
     public string code;
     private int[,] mas = new int[4, 2] { {0,1}, {1,0}, {0, -1}, {-1, 0}, };
+    
 
     public GameObject slideSoundPrefab; //Префаб со звуком слайда
 
@@ -219,6 +220,7 @@ public class Player : MonoBehaviour
         {
             isSliding = true;
             transform.localScale = new Vector3(originalScale.x, originalScale.y * 0.5f, originalScale.z); // Уменьшаем высоту персонажа
+            ApplyFastFall();
             Invoke("ResetSlide", slideDuration); // Сбрасываем подкат через указанное время
         }
     }
