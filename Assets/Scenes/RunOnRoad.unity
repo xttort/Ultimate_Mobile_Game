@@ -1513,12 +1513,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 79285d416d936db4a8b0b5eb483162f7, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 79285d416d936db4a8b0b5eb483162f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.00082
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 79285d416d936db4a8b0b5eb483162f7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.3002996
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 79285d416d936db4a8b0b5eb483162f7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -15070,6 +15074,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swipeThreshold: 25
+  leftTrigger: {fileID: 456489522}
+  rightTrigger: {fileID: 1360591792}
 --- !u!1 &1920299335 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 30698fe7c45da9445a5504fa49100473, type: 3}

@@ -8,6 +8,11 @@ public class cameraAnimations : MonoBehaviour
     private Vector2 touchStartPos; // Начальная позиция касания
     private bool isSwiping = false; // Флаг для отслеживания свайпа
     public float swipeThreshold = 25f; // Минимальная дистанция для свайпа
+
+    [Header("Trigger References")]//тригеры для проверки объекта справа и слева
+    public Trigger leftTrigger;
+    public Trigger rightTrigger;
+
     int pos = 0;
     // Start is called before the first frame update
     void Start()
@@ -41,7 +46,7 @@ public class cameraAnimations : MonoBehaviour
                             if (Mathf.Abs(swipeDelta.x) > Mathf.Abs(swipeDelta.y))
                             {
                                 // Горизонтальный свайп (влево/вправо)
-                                if (swipeDelta.x > 0)
+                                if (swipeDelta.x > 0 && !rightTrigger.notMove)
                                 {
                                     if (pos != 1)
                                     {
@@ -51,9 +56,8 @@ public class cameraAnimations : MonoBehaviour
                                         pos += 1;
                                     }
                                 }
-                                else
+                                else if(swipeDelta.x < 0 && !leftTrigger.notMove)
                                 {
-                                    
                                     if (pos != -1)
                                     {
                                         transform.localPosition = new Vector3(0, 0, 0);

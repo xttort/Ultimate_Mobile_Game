@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
 
     public GameObject slideSoundPrefab; //Префаб со звуком слайда
 
-    [Header("Trigger References")]
+    [Header("Trigger References")]//тригеры для проверки объекта справа и слева
     public Trigger leftTrigger;
     public Trigger rightTrigger;
 
@@ -117,7 +117,7 @@ public class Player : MonoBehaviour
                             // Определяем направление свайпа
                             if (Mathf.Abs(swipeDelta.x) > Mathf.Abs(swipeDelta.y))
                             {
-                                // Горизонтальный свайп (влево/вправо)
+                                // Горизонтальный свайп (влево/вправо) с проверкой есть ли объект слева и справа
                                 if (swipeDelta.x > 0 && !rightTrigger.notMove)
                                 {
                                     ChangeLane(1); // Свайп вправо
