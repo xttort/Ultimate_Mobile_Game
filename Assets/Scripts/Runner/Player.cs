@@ -219,7 +219,7 @@ public class Player : MonoBehaviour
         if (!isSliding)
         {
             isSliding = true;
-            transform.localScale = new Vector3(originalScale.x, originalScale.y * 0.5f, originalScale.z); // Уменьшаем высоту персонажа
+            transform.localScale = new Vector3(originalScale.x, originalScale.y * 0.2f, originalScale.z); // Уменьшаем высоту персонажа
             ApplyFastFall();
             Invoke("ResetSlide", slideDuration); // Сбрасываем подкат через указанное время
         }
