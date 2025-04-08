@@ -19,7 +19,7 @@ public class PlayerTimer : MonoBehaviour
     void Update()
     {
         timer -= Time.deltaTime;
-        timerUI.text = (Mathf.Round(timer)).ToString();
+        timerUI.text = "breathe time:" + (Mathf.Round(timer)).ToString();
         if(timer <0)
         {   
             // Получаем имя текущей сцены

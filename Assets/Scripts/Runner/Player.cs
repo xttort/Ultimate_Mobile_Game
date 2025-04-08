@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement; // Подключаем пространство имён для работы со сценами
 using UnityEngine;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -13,8 +14,9 @@ public class Player : MonoBehaviour
     public float slideDuration = 1f; // Длительность подката
     public float fastFallGravityMultiplier = 2f; // Множитель гравитации для ускоренного падения
     public string code;
-    private int[,] mas = new int[4, 2] { {0,1}, {1,0}, {0, -1}, {-1, 0}, };
-    
+    public int score = 0;
+    public TMP_Text scoreTxtPanel;
+
 
     public GameObject slideSoundPrefab; //Префаб со звуком слайда
 
@@ -33,7 +35,6 @@ public class Player : MonoBehaviour
     private Vector3 originalScale; // Исходный размер персонажа
     private float originalGravityScale; // Исходная гравитация
 
-    private int curDirection = 0;
 
     void Start()
     {
@@ -55,6 +56,22 @@ public class Player : MonoBehaviour
         }
     }
 
+    //oncl collectDust()
+    //{
+
+    //}
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.GetComponent<dust>())
+        {
+            //Debug.Log("!");
+            score++;
+            scoreTxtPanel.text = "score:"+ score.ToString();
+            Destroy(other.gameObject);
+        }
+
+    }
     void PlaySlideSound()
     {
         if (slideSoundPrefab != null)
@@ -63,16 +80,6 @@ public class Player : MonoBehaviour
             GameObject soundInstance = Instantiate(slideSoundPrefab, transform.position, Quaternion.identity);
             Destroy(soundInstance, 3f);
         }
-    }
-
-    int moveDirection(int changeFor)
-    {
-        int newDir = 0;
-        if (curDirection + changeFor > 3)
-        { newDir = 0; }
-        else if (curDirection + changeFor < 0)
-        { newDir = 3; }
-        return newDir;
     }
 
         // Метод для перезагрузки текущей сцены
@@ -220,7 +227,7 @@ public class Player : MonoBehaviour
         {
             isSliding = true;
             transform.localScale = new Vector3(originalScale.x, originalScale.y * 0.2f, originalScale.z); // Уменьшаем высоту персонажа
-            ApplyFastFall();
+            rb.velocity += Vector3.up * Physics.gravity.y * (1000 - 1) * Time.deltaTime;
             Invoke("ResetSlide", slideDuration); // Сбрасываем подкат через указанное время
         }
     }
