@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class TouchObject : MonoBehaviour
 {
-
     public Transform spawnArea;
     public GameObject slideSoundPrefab; //Префаб со звуком слайда
+    public DeletObject DelScript;
 
     void Update()
     {
@@ -26,8 +26,15 @@ public class TouchObject : MonoBehaviour
                 {
                     // Если объект обнаружен, удаляем его
                     ReturnObjectToPool(hit.collider.gameObject);
-                    GetComponent<TouchObject>().PlaySound();
-                    Debug.Log("Объект уничтожен: " + hit.collider.name);
+                    if (hit.collider.gameObject.CompareTag("Bomb"))
+                    {
+                        DelScript.TakeDamage();
+                        DelScript.PlaySound();
+                    }
+
+                    else
+                        PlaySound();
+
                 }
             }
         }

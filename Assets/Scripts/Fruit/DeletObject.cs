@@ -22,7 +22,7 @@ public class DeletObject : MonoBehaviour
         UpdateHealthUI(); // Обновляем интерфейс
     }
 
-    void PlaySound()
+    public void PlaySound()
     {
         if (slideSoundPrefab != null)
         {
@@ -37,13 +37,16 @@ public class DeletObject : MonoBehaviour
         // Проверяем тег столкнувшегося объекта
         if (collision.gameObject.CompareTag("Fruit") || collision.gameObject.CompareTag("Bomb"))
         {
-            TakeDamage(); // Наносим урон
-            GetComponent<DeletObject>().PlaySound();
+            if(collision.gameObject.CompareTag("Fruit"))
+            {
+                TakeDamage(); // Наносим урон
+                GetComponent<DeletObject>().PlaySound();
+            }
             ReturnObjectToPool(collision.gameObject); // Возвращаем объект в пул
         }
     }
 
-    private void TakeDamage()
+    public void TakeDamage()
     {
         currentHealth--; // Уменьшаем здоровье
         UpdateHealthUI(); // Обновляем интерфейс
