@@ -155,6 +155,7 @@ MonoBehaviour:
   spawnArea: {fileID: 0}
   slideSoundPrefab: {fileID: 7362903737167126186, guid: 014c551ee84b7104db6b341f48ca91a6, type: 3}
   DelScript: {fileID: 2142415469}
+  countGoal: 10
 --- !u!4 &250357918
 Transform:
   m_ObjectHideFlags: 0

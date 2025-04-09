@@ -35,10 +35,8 @@ public class Player : MonoBehaviour
     private Vector3 originalScale; // Исходный размер персонажа
     private float originalGravityScale; // Исходная гравитация
 
-
     void Start()
     {
-        
         rb = GetComponent<Rigidbody>(); // Получаем компонент Rigidbody
         originalScale = transform.localScale; // Сохраняем исходный размер персонажа
         originalGravityScale = Physics.gravity.y; // Сохраняем исходную гравитацию
@@ -46,6 +44,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+
         MoveForward(); // Движение вперёд
         HandleTouchInput(); // Обработка свайпов
 

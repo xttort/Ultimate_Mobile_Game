@@ -1,15 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TouchObject : MonoBehaviour
 {
     public Transform spawnArea;
     public GameObject slideSoundPrefab; //Префаб со звуком слайда
     public DeletObject DelScript;
+    private int countHit;
+    public int countGoal;
 
     void Update()
     {
+        if(countGoal == countHit)
+        {
+            PlayerPrefs.SetInt("Scene", 1);
+            PlayerPrefs.Save();
+            SceneManager.LoadScene("Main");
+        }
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0); // Получаем первое касание
@@ -26,6 +35,8 @@ public class TouchObject : MonoBehaviour
                 {
                     // Если объект обнаружен, удаляем его
                     ReturnObjectToPool(hit.collider.gameObject);
+                    if (hit.collider.gameObject.CompareTag("Fruit"))
+                        countHit++;
                     if (hit.collider.gameObject.CompareTag("Bomb"))
                     {
                         DelScript.TakeDamage();
