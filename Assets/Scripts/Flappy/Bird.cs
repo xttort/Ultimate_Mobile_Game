@@ -17,6 +17,7 @@ public class Bird : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1f;
         //Компонет RigidBody получение
         rb = GetComponent<Rigidbody>();
     }

@@ -10,6 +10,6 @@ public class ChangeSceneFlapp : MonoBehaviour
     {
         PlayerPrefs.SetInt("Scene", 4);
         PlayerPrefs.Save();
-        SceneManager.LoadScene("RunOnRoad");
+        SceneManager.LoadScene("Main");
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PreloadManager : MonoBehaviour
 {
@@ -10,8 +11,10 @@ public class PreloadManager : MonoBehaviour
     public Animator animPlayer;
     Player scriptPlayer;
     PlayerTimer scriptPlayerTimer;
-    public float time = 5f;
+    public float time = 58.1f;
     public AudioClip[] soundClips;
+    public AudioClip[] music;
+    public AudioSource PlayerAudioSource;
     public AudioSource mainSource;
 
 
@@ -21,38 +24,52 @@ public class PreloadManager : MonoBehaviour
         scene = PlayerPrefs.GetInt("Scene", 1);
         scriptPlayer = player.GetComponent<Player>();
         scriptPlayerTimer = player.GetComponent<PlayerTimer>();
+        //SceneManager.SetActiveScene(SceneManager.GetSceneByName("RunOnRoad"));
 
     }
     void Start()
     {
+        //SceneManager.SetActiveScene(SceneManager.GetSceneByName("RunOnRoad"));
         Time.timeScale = 1f;
         switch (scene)
         {
             case 1:
                 {
+                    PlayerAudioSource.Stop();
+                    PlayerAudioSource.clip = music[0];
+                    PlayerAudioSource.Play();
                     player.transform.position = new Vector3(-37f, 1f, -32.50065f); //установка позиции
                     StayPlayer();
-                    RenderSettings.fogColor = new Color32(71, 215, 255, 255); //цвет тумана
-                    time = 5f;
+                    RenderSettings.fogColor = new Color32(40, 66, 188, 255); //цвет тумана
+                    time = 58.1f;
                     break;
                 }
             case 2:
                 {
+                    PlayerAudioSource.Stop();
+                    PlayerAudioSource.clip = music[1];
+                    PlayerAudioSource.Play();
                     player.transform.position = new Vector3(-37f, 1f, -32.50065f); //установка позиции
                     RunPlayer();
-                    RenderSettings.fogColor = new Color32(71, 215, 255, 255); //цвет тумана
+                    RenderSettings.fogColor = new Color32(40, 66, 188, 255); //цвет тумана
                     break;
                 }
             case 4:
                 {
+                    PlayerAudioSource.Stop();
+                    PlayerAudioSource.clip = music[2];
+                    PlayerAudioSource.Play();
                     player.transform.position = new Vector3(-37f, 1f, 1016f); //установка позиции
                     StayPlayer();
                     RenderSettings.fogColor = new Color32(255, 215, 71, 255); //цвет тумана
-                    time = 5f;
+                    time = 58.1f;
                     break;
                 }
             case 5:
                 {
+                    PlayerAudioSource.Stop();
+                    PlayerAudioSource.clip = music[3];
+                    PlayerAudioSource.Play();
                     player.transform.position = new Vector3(-37f, 1f, 1016f); //установка позиции
                     RunPlayer();
                     RenderSettings.fogColor = new Color32(255, 215, 71, 255); //цвет тумана
@@ -77,18 +94,25 @@ public class PreloadManager : MonoBehaviour
         */
         if (scene == 1)
         {
-            if(TimeOut())
+            if(TimeOut() && PlayerAudioSource.clip == music[0])
             {
+                PlayerAudioSource.Stop();
+                PlayerAudioSource.clip = music[1];
+                PlayerAudioSource.Play();
                 PlayerPrefs.SetInt("Scene", 2);
                 PlayerPrefs.Save();
                 RunPlayer();
+                Debug.Log("!");
 
             }
         }
         else if(scene == 4)
         {
-            if (TimeOut())
+            if (TimeOut() && PlayerAudioSource.clip == music[2])
             {
+                PlayerAudioSource.Stop();
+                PlayerAudioSource.clip = music[3];
+                PlayerAudioSource.Play();
                 PlayerPrefs.SetInt("Scene", 5);
                 PlayerPrefs.Save();
                 RunPlayer();
@@ -101,6 +125,7 @@ public class PreloadManager : MonoBehaviour
         animPlayer.SetBool("isActive", false);
         scriptPlayer.enabled = false; //выключение скриптов игрока
         scriptPlayerTimer.enabled = false; //выключение скриптов игрока таймера
+        
     }
 
     void RunPlayer()

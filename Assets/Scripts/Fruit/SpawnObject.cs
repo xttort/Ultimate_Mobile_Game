@@ -17,6 +17,7 @@ public class SpawnObject : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1f;
         // создаем пул объектов при старте игры
         for (int i = 0; i < maxActiveObjects; i++)
         {

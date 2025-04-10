@@ -15,10 +15,20 @@ public class ChooseScenes : MonoBehaviour
     public void ChooseScene()
     {
         if (scene == 1 || scene == 2 || scene == 4 || scene == 5)
+        {
             SceneManager.LoadScene("RunOnRoad");
+            //SceneManager.SetActiveScene(SceneManager.GetSceneByName("RunOnRoad"));
+        }
         else if (scene == 3)
+
+        {
             SceneManager.LoadScene("FlappyBirds");
+            //SceneManager.SetActiveScene(SceneManager.GetSceneByName("FlappyBirds"));
+        }
         else if (scene == 6)
+        {
             SceneManager.LoadScene("FruitNinja");
+            //SceneManager.SetActiveScene(SceneManager.GetSceneByName("FruitNinja"));
+        }
     }
 }

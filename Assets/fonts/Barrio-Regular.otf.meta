@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: ddf6f2ea5c80fe941a1464d407164ed4
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Barrio
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: c1b88c35320d7bc41a0be520d76059fb, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

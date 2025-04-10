@@ -66,7 +66,7 @@ public class Player : MonoBehaviour
         {
             //Debug.Log("!");
             score++;
-            scoreTxtPanel.text = "score:"+ score.ToString();
+            scoreTxtPanel.text = "Собрано:"+ score.ToString();
             Destroy(other.gameObject);
         }
 

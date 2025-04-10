@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class dust : MonoBehaviour
 {
-    // Start is called before the first frame update
-  
+    public AudioClip takeC;
+    private void OnDestroy()
+    {
+        //AudioSource takeNew = Instantiate(take);
+        //takeNew.transform.position = 
+        AudioSource.PlayClipAtPoint(takeC, transform.position, 1f);
+    }
+
 }
